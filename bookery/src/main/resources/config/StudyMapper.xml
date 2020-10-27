@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="co.salpa.bookery.model.StudyDao">
+
+	<select id="selectAll" resultType="studyBean">
+		select * from study
+	</select>
+
+	<select id="selectOne" resultType="studyBean"
+		parameterType="_int">
+		select * from study where book_bid=#{book_bid}
+	</select>
+
+	<!-- 사용안함. 사용하는 사람 있으면 사용중으로 수정해주세요 -->
+	<select id="selectIdByUserId" resultType="java.lang.Integer"
+		parameterType="_int">
+		select id from study where user_id=#{user_id}
+	</select>
+	
+	<select id="selectOneByIdAndBid" resultType="studyBean"
+		parameterType="map">
+		select * from study where user_id=#{user_id} and book_bid=#{book_bid} and createtime &lt;= #{createtime}
+	</select>
+
+	<insert id="insertOne" parameterType="studyBean">
+		insert into study
+		(book_bid, user_id,updatetime) values (#{book_bid},#{user_id},now())
+	</insert>
+	
+	<update id="assertPlan" parameterType="studyBean">
+		update study set updatetime=now(), startdate=#{startdate}, enddate=#{enddate}, type=#{type}, memo=#{memo} where id=#{id}
+	</update>
+
+	<update id="updateTypeChap" parameterType="_int">
+		update salpa.study set type='chap' where study.id=#{id}
+	</update>
+
+	<update id="updateTypePage" parameterType="_int">
+		update salpa.study set type='page' where study.id=#{id}
+	</update>
+</mapper>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="co.salpa.bookery.model.V_StudyDao">
+	<select id="selectAll" resultType="v_studyBean">
+		select * from v_study
+	</select>
+	<select id="selectOne" resultType="v_studyBean"
+		parameterType="map">
+		select * from v_study where user_id = #{user} and book_bid = #{bid}
+	</select>
+	<select id="selectOneByStudyId" resultType="v_studyBean"
+		parameterType="int">
+		select * from v_study where study_id = #{study_id}
+	</select>
+	<select id="selectAllByUserId" resultType="v_studyBean"
+		parameterType="int">
+		select * from v_study where user_id = #{user}
+	</select>
+	<select id="selectActiveByUserId" resultType="v_studyBean"
+		parameterType="int">
+		select * from v_study where user_id = #{user} and type is not null and progress_rate &lt; 100
+	</select>
+	<select id="selectActiveByUserIdRecent" resultType="v_studyBean"
+		parameterType="int">
+		select * from v_study where user_id = #{user} and type is not null and progress_rate &lt; 100 order by updatetime desc
+	</select>
+	<select id="selectActiveStudyIDByUserId" resultType="java.lang.Integer"
+		parameterType="int">
+		select study_id from v_study where user_id = #{user} and type is not null and progress_rate &lt; 100
+	</select>
+	<select id="selectNoGoalBook" resultType="v_studyBean" parameterType="_int">
+ 		select * from v_study where type is null and user_id=#{id}
+ 	</select>
+ 	<select id="countNoGoalBook" resultType="Integer" parameterType="_int">
+ 		select count(*) from (select title from v_study where type is null and user_id=#{id})c
+ 	</select>
+ 	<select id="selectStudyingBook" resultType="v_studyBean" parameterType="_int">
+ 		select * from v_study where type is not null and progress_rate &lt; 100 and user_id=#{id}
+ 	</select>
+ 	<select id="countStudyingBook" resultType="Integer" parameterType="_int">
+ 		select count(*) from (select title from v_study where progress_rate &lt; 100 and type is not null and user_id=#{id})c
+ 	</select>
+ 	<select id="selectFinishedBook" resultType="v_studyBean" parameterType="_int">
+ 		select * from v_study where progress_rate=100 and user_id=#{id}
+ 	</select>
+ 	<select id="countFinishedBook" resultType="Integer" parameterType="_int">
+ 		select count(*) from (select title from v_study where progress_rate = 100 and user_id=#{id})c
+ 	</select>
+ 	<select id="countPeopleByBook" parameterType="_int">
+ 		select count(book_bid) from v_study where book_bid =#{book_bid}
+ 	</select>
+ 	
+ 	<select id="bestAchieveUser" resultType="v_studyBean">
+ 		select nickname,count(nickname) as pages from v_study where progress_rate=100 group by nickname order by pages desc limit 5
+ 	</select>
+</mapper>
