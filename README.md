@@ -1,4 +1,4 @@
-4th Project - https://bookury.com/
+4th Project - http://bookury.com/
 📚 북커리(Bookery) 도서를 통한 학습 및 독서활동 일정 / 기록 관리 웹 사이트
 
 🌿 salad-party presents
